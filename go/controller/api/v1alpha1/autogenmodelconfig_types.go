@@ -18,11 +18,39 @@ package v1alpha1
 
 import (
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
+  //"github.com/kagent-dev/kagent/go/autogen/api"
 )
 
 const (
 	ModelConfigConditionTypeAccepted = "Accepted"
 )
+
+// ModelInfo contains information about the model
+type ModelInfo struct {
+	// Indicates if the model supports vision
+	// +optional
+	Vision bool `json:"vision,omitempty"`
+
+	// Indicates if the model supports function calling
+	// +optional
+	FunctionCalling bool `json:"functionCalling,omitempty"`
+
+	// Indicates if the model supports JSON output
+  // +optional
+	JSONOutput bool `json:"jsonOutput,omitempty"`
+
+	// Model family
+	// +optional
+	Family string `json:"family,omitempty"`
+  // Model structuredOutput
+  // +optional
+  StructuredOutput bool `json:"structuredOutput,omitempty"`
+  // Model multiple system messages
+  // +optional
+  MultipleSystemMessages bool `json:"multipleSystemMessages,omitempty"`
+
+}
+
 
 // ModelProvider represents the model provider type
 // +kubebuilder:validation:Enum=Anthropic;OpenAI;AzureOpenAI;Ollama
@@ -97,6 +125,8 @@ type OpenAIConfig struct {
 
 	// Timeout
 	Timeout *int `json:"timeout,omitempty"`
+  
+  ModelInfo *ModelInfo `json:"modelInfo,omitempty"`
 }
 
 // AzureOpenAIConfig contains Azure OpenAI-specific configuration options
@@ -133,6 +163,8 @@ type AzureOpenAIConfig struct {
 	// Top-p sampling parameter
 	// +optional
 	TopP string `json:"topP,omitempty"`
+
+
 }
 
 // OllamaConfig contains Ollama-specific configuration options
@@ -163,13 +195,8 @@ type ModelConfigSpec struct {
 	// +kubebuilder:validation:Enum=Anthropic;OpenAI;AzureOpenAI;Ollama
 	Provider ModelProvider `json:"provider"`
 
-	// The name of the secret that contains the API key
-	// +optional
 	APIKeySecretName string `json:"apiKeySecretName"`
-
-	// The key in the secret that contains the API key
-	// +optional
-	APIKeySecretKey string `json:"apiKeySecretKey"`
+	APIKeySecretKey  string `json:"apiKeySecretKey"`
 
 	// OpenAI-specific configuration
 	// +optional
