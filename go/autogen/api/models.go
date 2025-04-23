@@ -6,6 +6,9 @@ type ModelInfo struct {
 	FunctionCalling bool   `json:"function_calling"`
 	JSONOutput      bool   `json:"json_output"`
 	Family          string `json:"family"`
+	StructuredOutput bool `json:"structured_output,omitempty"`
+  	MultipleSystemMessages bool `json:"multiple_system_messages,omitempty"`
+
 }
 
 type OpenAICreateArgumentsConfig struct {
